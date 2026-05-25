@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rangkuman Materi AI — Mode AI, Gemini Academy & Prompt Mastery</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --accent-blue: #4f8ef7;
+    --accent-gold: #f0c060;
+    --accent-coral: #f76f6f;
+    --accent-mint: #4fd8b0;
+    --accent-purple: #9b7ff0;
+    --glow-blue: rgba(79,142,247,0.15);
+    --glow-gold: rgba(240,192,96,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,142,247,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 100%, rgba(155,127,240,0.08) 0%, transparent 60%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(79,142,247,0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(240,192,96,0.04) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero h1 span.g { color: var(--accent-blue); }
+  .hero h1 span.a { color: var(--accent-coral); }
+  .hero h1 span.p { color: var(--accent-gold); }
+
+  .hero-sub {
+    max-width: 580px;
+    color: var(--muted);
+    font-size: 17px;
+    margin-top: 20px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .toc {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--surface);
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .toc-item:hover { border-color: var(--accent-blue); color: var(--accent-blue); transform: translateY(-2px); }
+  .toc-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* SECTIONS */
+  .section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+
+  .badge-blue { background: rgba(79,142,247,0.12); color: var(--accent-blue); border: 1px solid rgba(79,142,247,0.2); }
+  .badge-gold { background: rgba(240,192,96,0.12); color: var(--accent-gold); border: 1px solid rgba(240,192,96,0.2); }
+  .badge-coral { background: rgba(247,111,111,0.12); color: var(--accent-coral); border: 1px solid rgba(247,111,111,0.2); }
+  .badge-mint { background: rgba(79,216,176,0.12); color: var(--accent-mint); border: 1px solid rgba(79,216,176,0.2); }
+  .badge-purple { background: rgba(155,127,240,0.12); color: var(--accent-purple); border: 1px solid rgba(155,127,240,0.2); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 640px;
+    margin-bottom: 48px;
+  }
+
+  /* CARDS */
+  .card-grid { display: grid; gap: 16px; }
+  .card-grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card-grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .card-grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.12); }
+  .card:hover::before { opacity: 1; }
+
+  .card-blue::before { background: linear-gradient(90deg, transparent, var(--accent-blue), transparent); }
+  .card-gold::before { background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); }
+  .card-coral::before { background: linear-gradient(90deg, transparent, var(--accent-coral), transparent); }
+  .card-mint::before { background: linear-gradient(90deg, transparent, var(--accent-mint), transparent); }
+  .card-purple::before { background: linear-gradient(90deg, transparent, var(--accent-purple), transparent); }
+
+  .card-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #0d0d14;
+    border: 1px solid rgba(79,142,247,0.15);
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .code-block::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--accent-blue);
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 2px 10px;
+    border-radius: 100px;
+  }
+
+  .tag-p { color: #4f8ef7; font-weight: 700; }
+  .tag-t { color: #4fd8b0; font-weight: 700; }
+  .tag-c { color: #9b7ff0; font-weight: 700; }
+  .tag-f { color: #f0c060; font-weight: 700; }
+  .tag-k { color: #f76f6f; font-weight: 700; }
+  .tag-r { color: #f0c060; font-weight: 700; }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+
+  .compare-table th {
+    padding: 14px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .compare-table th.th-blue { color: var(--accent-blue); }
+  .compare-table th.th-coral { color: var(--accent-coral); }
+
+  .compare-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+
+  .compare-table td:first-child { color: var(--text); font-weight: 500; }
+  .compare-table tr:hover td { background: var(--surface2); }
+
+  /* QUOTE */
+  .quote {
+    border-left: 3px solid var(--accent-gold);
+    padding: 16px 24px;
+    margin: 24px 0;
+    background: rgba(240,192,96,0.04);
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  /* PILL LIST */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .pill {
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .pill-blue { background: rgba(79,142,247,0.12); color: var(--accent-blue); }
+  .pill-gold { background: rgba(240,192,96,0.12); color: var(--accent-gold); }
+  .pill-coral { background: rgba(247,111,111,0.12); color: var(--accent-coral); }
+  .pill-mint { background: rgba(79,216,176,0.12); color: var(--accent-mint); }
+  .pill-purple { background: rgba(155,127,240,0.12); color: var(--accent-purple); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 16px 0;
+  }
+
+  /* KEY INSIGHT */
+  .insight {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin: 16px 0;
+  }
+
+  .insight-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .insight-text { font-size: 14px; color: var(--muted); }
+  .insight-text strong { color: var(--text); }
+
+  /* CLOSING */
+  .closing {
+    text-align: center;
+    padding: 80px 24px;
+    background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(79,142,247,0.08) 0%, transparent 70%);
+    border-top: 1px solid var(--border);
+  }
+
+  .closing h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+
+  .closing p { color: var(--muted); max-width: 500px; margin: 0 auto 36px; }
+
+  .formula-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate { opacity: 0; transform: translateY(24px); transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+  .animate.visible { opacity: 1; transform: translateY(0); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-label">📚 Ringkasan Komprehensif · Tiga Materi AI</p>
+  <h1>
+    <span class="g">Google</span> AI Ecosystem:<br>
+    Mode <span class="a">AI</span>, Gemini <span class="p">Academy</span><br>
+    & Prompt Mastery
+  </h1>
+  <p class="hero-sub">Distilasi inti dari tiga materi — dirangkum menjadi satu referensi padat yang bisa kamu baca dalam 10 menit.</p>
+  <nav class="toc">
+    <a class="toc-item" href="#mode-ai"><span class="toc-dot" style="background:#4f8ef7"></span>Mode AI</a>
+    <a class="toc-item" href="#gemini-3"><span class="toc-dot" style="background:#f0c060"></span>Gemini 3 & Nano Banana Pro</a>
+    <a class="toc-item" href="#gemini-academy"><span class="toc-dot" style="background:#4fd8b0"></span>Gemini Academy</a>
+    <a class="toc-item" href="#prompt-mastery"><span class="toc-dot" style="background:#9b7ff0"></span>Prompt Mastery (PTCF & TKR)</a>
+    <a class="toc-item" href="#closing"><span class="toc-dot" style="background:#f76f6f"></span>Kesimpulan</a>
+  </nav>
+</header>
+
+<!-- SECTION 1: MODE AI -->
+<section class="section animate" id="mode-ai">
+  <span class="section-badge badge-blue">📌 Materi 1 — Mode AI</span>
+  <h2 class="section-title">Google Mode AI:<br>Evolusi Cara Bertanya</h2>
+  <p class="section-desc">Mode AI bukan fitur tambahan — ini adalah pergeseran paradigma dari pencarian keyword ke percakapan berbasis pemahaman konteks.</p>
+
+  <div class="card-grid card-grid-2">
+    <div class="card card-blue animate">
+      <span class="card-icon">🔍</span>
+      <div class="card-label" style="color:var(--accent-blue)">Apa itu?</div>
+      <h3>Pengembangan dari AI Overview</h3>
+      <p>Fitur pencarian Google yang didukung kecerdasan Gemini. Bukan sekadar daftar tautan — melainkan jawaban yang sudah disintesis, terstruktur, dan siap pakai.</p>
+    </div>
+    <div class="card card-gold animate">
+      <span class="card-icon">🧠</span>
+      <div class="card-label" style="color:var(--accent-gold)">Mengapa Pintar?</div>
+      <h3>"Otak" Gemini + "Data" Google Search</h3>
+      <p>Gemini berperan sebagai reasoning engine yang berpikir dan bernalar, sementara Google Search menyediakan akses ke hampir seluruh informasi di dunia.</p>
+    </div>
+  </div>
+
+  <h3 style="margin: 40px 0 20px; font-size: 18px; font-weight: 600;">4 Keunggulan Utama</h3>
+  <div class="card-grid card-grid-4">
+    <div class="card card-coral animate">
+      <span class="card-icon">💬</span>
+      <div class="card-label" style="color:var(--accent-coral)">Tanya Apa pun</div>
+      <h3>Multidimensi</h3>
+      <p>Pertanyaan pendek, panjang, bahkan 10 pertanyaan sekaligus dijawab dengan tuntas.</p>
+    </div>
+    <div class="card card-mint animate">
+      <span class="card-icon">🎙️</span>
+      <div class="card-label" style="color:var(--accent-mint)">Cara Apa pun</div>
+      <h3>Multimodal</h3>
+      <p>Ketik, ucapkan, foto, atau rekam — Mode AI memproses semua jenis input.</p>
+    </div>
+    <div class="card card-purple animate">
+      <span class="card-icon">🔗</span>
+      <div class="card-label" style="color:var(--accent-purple)">Terus Jelajahi</div>
+      <h3>Kontekstual</h3>
+      <p>Menyimpan memori percakapan — tanya lanjutan tanpa mengulang konteks dari awal.</p>
+    </div>
+    <div class="card card-blue animate">
+      <span class="card-icon">⚡</span>
+      <div class="card-label" style="color:var(--accent-blue)">Lakukan Lebih</div>
+      <h3>Produktif</h3>
+      <p>Rencanakan, riset, curahkan gagasan — biarkan AI mengerjakan pekerjaan dasarnya.</p>
+    </div>
+  </div>
+
+  <div class="divider" style="margin: 40px 0;"></div>
+
+  <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 600;">Perbandingan: Keyword vs. Query</h3>
+  <table class="compare-table animate">
+    <thead>
+      <tr>
+        <th>Aspek</th>
+        <th class="th-coral">🔑 Pencarian Tradisional (Keyword)</th>
+        <th class="th-blue">✨ Mode AI (Query)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Cara Kerja</td><td>Mencocokkan kata kunci secara literal</td><td>Memahami konteks dan maksud pertanyaan</td></tr>
+      <tr><td>Output</td><td>Daftar tautan untuk dijelajahi sendiri</td><td>Jawaban terstruktur yang sudah disintesis</td></tr>
+      <tr><td>Memori</td><td>Setiap pencarian dimulai dari nol</td><td>Menyimpan konteks sepanjang percakapan</td></tr>
+      <tr><td>Relevansi</td><td>Bercampur iklan & konten non-relevan</td><td>Fokus pada tujuan dan kebutuhan spesifik</td></tr>
+      <tr><td>Riset</td><td>Pemilahan manual & memakan waktu</td><td>Ringkasan cerdas dari sumber berkualitas</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight animate">
+    <span class="insight-icon">💡</span>
+    <div class="insight-text"><strong>Kunci Penggunaan Mode AI:</strong> Gunakan bahasa alami seperti berbicara ke teman terpintar. Sertakan konteks yang spesifik untuk mendapatkan jawaban yang lebih relevan dan terstruktur.</div>
+  </div>
+
+  <h3 style="margin: 36px 0 16px; font-size: 18px; font-weight: 600;">Nano Banana — Fitur Image Generation di Mode AI</h3>
+  <div class="card-grid card-grid-2 animate">
+    <div class="card card-gold">
+      <span class="card-icon">🎨</span>
+      <h3>Nano Banana (Dasar)</h3>
+      <p>Buat atau edit foto & ilustrasi secara instan langsung dari Mode AI. Buka Lens, pilih mode Buat, gunakan prompt teks.</p>
+    </div>
+    <div class="card card-gold">
+      <span class="card-icon">🔬</span>
+      <h3>Nano Banana Pro (Lanjutan)</h3>
+      <p>Gabungkan 6+ gambar sekaligus, buat infografis kompleks, terhubung ke Google Search untuk konteks real-time, tanpa kehilangan kualitas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: GEMINI 3 -->
+<section class="section animate" id="gemini-3">
+  <span class="section-badge badge-gold">📌 Materi 1 (Lanjutan) — Gemini 3</span>
+  <h2 class="section-title">Gemini 3:<br>Lompatan Generasi Baru</h2>
+  <p class="section-desc">Dirilis 18 November 2025, Gemini 3 hadir sebagai model AI dengan kemampuan reasoning paling canggih yang pernah ada dari Google.</p>
+
+  <div class="card-grid card-grid-3 animate">
+    <div class="card card-blue">
+      <span class="card-icon">📚</span>
+      <div class="card-label" style="color:var(--accent-blue)">Belajar</div>
+      <h3>Apa pun</h3>
+      <p>Percakapan multidimensi yang mengombinasikan pemahaman teks, penglihatan visual, dan aspek kognitif secara bersamaan.</p>
+    </div>
+    <div class="card card-mint">
+      <span class="card-icon">🛠️</span>
+      <div class="card-label" style="color:var(--accent-mint)">Ciptakan</div>
+      <h3>Apa pun</h3>
+      <p>Dari developer berpengalaman sampai Vibe Coder — Gemini 3 bisa mewujudkan ide ke dunia nyata lewat Agentic Coding.</p>
+    </div>
+    <div class="card card-purple">
+      <span class="card-icon">📅</span>
+      <div class="card-label" style="color:var(--accent-purple)">Rencanakan</div>
+      <h3>Apa pun</h3>
+      <p>Delegasikan tugas harian berulang — merapikan inbox, melakukan reservasi, dan otomatisasi rutinitas harian.</p>
+    </div>
+  </div>
+
+  <div class="quote animate">
+    "Gemini 3 Pro menempati posisi teratas di LMArena Leaderboard dengan skor 1501 — melampaui GPT-5.1, Claude Sonnet 4.5, dan Gemini 2.5 Pro dalam hampir semua benchmark."
+  </div>
+
+  <h3 style="margin: 36px 0 16px; font-size: 18px; font-weight: 600;">Benchmark Kunci Gemini 3 Pro</h3>
+  <div class="pill-list animate">
+    <span class="pill pill-blue">AIME 2025: 95–100%</span>
+    <span class="pill pill-gold">GPQA Diamond: 91.9%</span>
+    <span class="pill pill-mint">MMMU-Pro: 81%</span>
+    <span class="pill pill-purple">Video-MMU: 87.6%</span>
+    <span class="pill pill-coral">LiveCodeBench: 2,439 Elo</span>
+    <span class="pill pill-blue">MMMLU (Multilingual): 91.8%</span>
+    <span class="pill pill-gold">SWE-Bench: 76.2%</span>
+  </div>
+</section>
+
+<!-- SECTION 3: GEMINI ACADEMY -->
+<section class="section animate" id="gemini-academy">
+  <span class="section-badge badge-mint">📌 Materi 2 — Gemini Academy</span>
+  <h2 class="section-title">Gemini Academy<br>untuk Mahasiswa</h2>
+  <p class="section-desc">Panduan praktis memaksimalkan Gemini sebagai asisten belajar — dari etika penggunaan AI hingga teknik prompting yang efektif.</p>
+
+  <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 600;">Gemini Bisa Bantu Kamu dalam 3 Bidang</h3>
+  <div class="card-grid card-grid-3 animate">
+    <div class="card card-mint">
+      <span class="card-icon">🔬</span>
+      <h3>Riset & Berpikir Kritis</h3>
+      <p>Eksplorasi topik, perspektif alternatif, mengumpulkan gagasan, meringkas materi, memastikan akurasi fakta.</p>
+    </div>
+    <div class="card card-blue">
+      <span class="card-icon">✍️</span>
+      <h3>Kemampuan Menulis</h3>
+      <p>Menggagas konsep, mengatasi hambatan menulis, menyempurnakan karya akademik sesuai standar kampus.</p>
+    </div>
+    <div class="card card-purple">
+      <span class="card-icon">🎓</span>
+      <h3>Pembelajaran Terpersonalisasi</h3>
+      <p>Simplifikasi konteks sulit, pemberian analogi, dukungan berbagai metode belajar, uji pemahaman mandiri.</p>
+    </div>
+  </div>
+
+  <div class="divider" style="margin: 40px 0;"></div>
+
+  <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 600;">🛡️ Panduan Etika AI yang Bijak</h3>
+  <div class="card-grid card-grid-2 animate">
+    <div class="card card-coral">
+      <span class="card-icon">✅</span>
+      <h3>Yang HARUS Dilakukan</h3>
+      <p style="margin-bottom:10px">• Cek aturan kampus tentang penggunaan AI<br>• Buat prompt jelas dan spesifik + sertakan sumber<br>• Akui pemakaian AI dalam tugas sesuai peraturan<br>• Pastikan hasil akhir mencerminkan pikiranmu sendiri</p>
+    </div>
+    <div class="card card-coral">
+      <span class="card-icon">❌</span>
+      <h3>Yang TIDAK Boleh</h3>
+      <p>• Menulis data pribadi/sensitif ke alat AI<br>• Langsung percaya tanpa verifikasi akurasi & bias<br>• Minta AI menulis tugas penuh tanpa kontribusi sendiri<br>• Memakai ringkasan AI sebagai pengganti membaca buku</p>
+    </div>
+  </div>
+
+  <div class="divider" style="margin: 40px 0;"></div>
+
+  <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: 600;">🎯 Fitur Gemini yang Wajib Diketahui Mahasiswa</h3>
+  <div class="card-grid card-grid-2 animate">
+    <div class="card card-blue">
+      <span class="card-icon">🔎</span>
+      <h3>Deep Research</h3>
+      <p>Memandu riset kompleks secara otomatis — merencanakan langkah riset, mencari sumber kredibel dari web, lalu menyusun laporan komprehensif. Platform: <strong>Gemini App (Google AI Pro)</strong></p>
+    </div>
+    <div class="card card-purple">
+      <span class="card-icon">📓</span>
+      <h3>NotebookLM</h3>
+      <p>Upload catatan & bahan kuliah, lalu Gemini buatkan panduan belajar, ringkasan, kuis, dan Audio Overview (podcast dari materi). Platform: <strong>notebooklm.google.com</strong></p>
+    </div>
+    <div class="card card-mint">
+      <span class="card-icon">🎙️</span>
+      <h3>Gemini Live</h3>
+      <p>Diskusi real-time dengan suara dan kamera aktif. Bisa pindai buku teks atau papan tulis langsung, lalu tanya secara lisan sambil berjalan atau belajar.</p>
+    </div>
+    <div class="card card-gold">
+      <span class="card-icon">💎</span>
+      <h3>Gems (Custom AI)</h3>
+      <p>AI khusus yang dirancang untuk tugas tertentu — contoh: Learning Coach Gem yang berperan sebagai tutor personal dengan gaya mengajar yang konsisten.</p>
+    </div>
+  </div>
+
+  <h3 style="margin: 40px 0 16px; font-size: 18px; font-weight: 600;">Free vs. Google AI Pro</h3>
+  <table class="compare-table animate">
+    <thead>
+      <tr>
+        <th>Fitur</th>
+        <th>Free</th>
+        <th class="th-blue">Google AI Pro</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Gemini 2.5 Pro</td><td>Akses terbatas</td><td>Akses lebih luas</td></tr>
+      <tr><td>Context Window</td><td>32K token (~50 halaman)</td><td>1 Juta token (~1.500 halaman)</td></tr>
+      <tr><td>Deep Research</td><td>Terbatas (2.0 Flash)</td><td>Luas (2.5 Pro & Flash)</td></tr>
+      <tr><td>Video Generation</td><td>Tidak tersedia</td><td>Akses ke Veo 3</td></tr>
+      <tr><td>NotebookLM</td><td>Standar</td><td>5x lebih banyak notebook & audio</td></tr>
+      <tr><td>Google One Storage</td><td>—</td><td>+2TB</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SECTION 4: PROMPT MASTERY -->
+<section class="section animate" id="prompt-mastery">
+  <span class="section-badge badge-purple">📌 Materi 3 — Mastering AI Architectures</span>
+  <h2 class="section-title">The Prompt Master:<br>Rumus PTCF & TKR</h2>
+  <p class="section-desc">Dua arsitektur instruksi berbeda untuk dua misi berbeda — eksplorasi mendalam vs eksekusi data taktis. Pilih yang tepat, gunakan dengan benar.</p>
+
+  <!-- PTCF -->
+  <div style="margin-bottom: 48px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+      <span style="background:rgba(79,142,247,0.15); color:var(--accent-blue); padding:6px 16px; border-radius:100px; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; letter-spacing:1px; border:1px solid rgba(79,142,247,0.2)">RUMUS 1</span>
+      <span style="font-size:13px; color:var(--muted)">Platform: Gemini Deep Research & Gemini Advanced</span>
+    </div>
+
+    <div class="card-grid card-grid-4 animate">
+      <div class="card card-blue">
+        <div class="card-label" style="color:var(--accent-blue)">[P]</div>
+        <h3>Persona</h3>
+        <p>Tetapkan identitas & peran profesional AI. Menetapkan "Chef Bintang Lima" vs "Ibu Rumah Tangga" = hasil yang sangat berbeda.</p>
+      </div>
+      <div class="card card-mint">
+        <div class="card-label" style="color:var(--accent-mint)">[T]</div>
+        <h3>Task</h3>
+        <p>Gunakan kata kerja konkret & operasional. Bukan "bahas tentang" — tapi: Analisis, Selidiki, Susun laporan, Buat draf.</p>
+      </div>
+      <div class="card card-purple">
+        <div class="card-label" style="color:var(--accent-purple)">[C]</div>
+        <h3>Context</h3>
+        <p>Batasan masalah & parameter situasi nyata. Mencegah AI "tersesat" membaca artikel tidak relevan saat navigasi internet.</p>
+      </div>
+      <div class="card card-gold">
+        <div class="card-label" style="color:var(--accent-gold)">[F]</div>
+        <h3>Format</h3>
+        <p>Struktur output akhir: tabel markdown, poin-poin, laporan profesional. Tabel Markdown = mudah copy-paste ke Docs/Sheets.</p>
+      </div>
+    </div>
+
+    <div class="code-block animate" data-label="CONTOH PROMPT PTCF">
+      <span class="tag-p">[P]</span> Bertindaklah sebagai Peneliti Akademik Senior dan Sosiolog Digital yang pakar...<br><br>
+      <span class="tag-t">[T]</span> Tugas utama: melakukan riset mendalam untuk menyelidiki bagaimana<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;intensitas penggunaan TikTok memengaruhi fokus belajar mahasiswa...<br><br>
+      <span class="tag-c">[C]</span> Konteks: algoritma FYP memicu penurunan rentang perhatian...<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;mahasiswa lintas jurusan (SAINTEK & SOSHUM)... dari 2020–2026...<br><br>
+      <span class="tag-f">[F]</span> Tampilkan dalam format laporan profesional terstruktur...<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;tabel markdown untuk perbandingan data... sertakan link sitasi valid.
+    </div>
+  </div>
+
+  <!-- TKR -->
+  <div>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+      <span style="background:rgba(247,111,111,0.15); color:var(--accent-coral); padding:6px 16px; border-radius:100px; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; letter-spacing:1px; border:1px solid rgba(247,111,111,0.2)">RUMUS 2</span>
+      <span style="font-size:13px; color:var(--muted)">Platform: NotebookLM & Gemini Side Panel (Docs/Gmail)</span>
+    </div>
+
+    <div class="card-grid card-grid-3 animate">
+      <div class="card card-coral">
+        <div class="card-label" style="color:var(--accent-coral)">[T]</div>
+        <h3>Tugas</h3>
+        <p>Tindakan pengolahan langsung. Tidak mencari dari nol — contoh: "buatkan ringkasan", "susun 5 slide presentasi", "buat 3 pertanyaan reflektif".</p>
+      </div>
+      <div class="card card-gold">
+        <div class="card-label" style="color:var(--accent-gold)">[K]</div>
+        <h3>Konteks</h3>
+        <p>Target pembaca & nada bicara. Menyesuaikan tone of voice — formal untuk dosen, santai untuk teman sebaya, teknis untuk komunitas ilmiah.</p>
+      </div>
+      <div class="card card-coral">
+        <div class="card-label" style="color:var(--accent-coral)">[R]</div>
+        <h3>Referensi</h3>
+        <p>Komponen "penjaga batas" — memaksa AI menjawab HANYA dari dokumen yang kamu unggah. <strong style="color:var(--text)">Zero Hallucination Secured.</strong></p>
+      </div>
+    </div>
+
+    <div class="code-block animate" data-label="CONTOH PROMPT TKR">
+      <span class="tag-t">[T]</span> Buatkan saya ringkasan eksekutif yang padat, draf materi presentasi<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;sebanyak 5 slide, dan 3 pertanyaan reflektif...<br><br>
+      <span class="tag-k">[K]</span> ...dalam konteks menyusun program orientasi digital wellbeing<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;bagi mahasiswa baru... Pastikan rekomendasi praktis, realistis,<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;dan relevan dengan gaya hidup generasi muda saat ini...<br><br>
+      <span class="tag-r">[R]</span> Sebagai referensi utamanya, gunakan seluruh data dan temuan dari<br>
+         &nbsp;&nbsp;&nbsp;&nbsp;<span style="background:rgba(240,192,96,0.2); padding:2px 6px; border-radius:4px">dokumen laporan hasil Gemini Deep Research</span> yang sudah saya unggah.
+    </div>
+
+    <div class="insight animate">
+      <span class="insight-icon">🔗</span>
+      <div class="insight-text"><strong>Sinergi Dua Rumus:</strong> Output dari PTCF (hasil Gemini Deep Research) menjadi input [R] untuk TKR. Gunakan PTCF untuk menggali data, lalu TKR untuk mengolah data tersebut menjadi produk siap pakai.</div>
+    </div>
+  </div>
+
+  <!-- MATRIX -->
+  <h3 style="margin: 40px 0 20px; font-size: 18px; font-weight: 600;">Matriks Keputusan: Kapan Pakai PTCF vs TKR?</h3>
+  <table class="compare-table animate">
+    <thead>
+      <tr>
+        <th>Dimensi</th>
+        <th class="th-blue">🔵 PTCF — Eksplorasi</th>
+        <th class="th-coral">🟠 TKR — Eksekusi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Mode Operasi</td><td>Mencari Jawaban</td><td>Mengolah Jawaban</td></tr>
+      <tr><td>Radius Pencarian</td><td>Seluruh lautan internet</td><td>Ruang tertutup dokumen Anda</td></tr>
+      <tr><td>Karakteristik Output</td><td>Mendalam, Akademis, Komprehensif</td><td>Taktis, Cepat, Siap Pakai</td></tr>
+      <tr><td>Komponen Krusial</td><td>[P] Persona — membentuk identitas</td><td>[R] Referensi — mengunci halusinasi</td></tr>
+      <tr><td>Gunakan Saat...</td><td>Riset dari nol, butuh perspektif luas</td><td>Punya dokumen, butuh produk jadi</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CLOSING -->
+<section class="closing animate" id="closing">
+  <h2>AI adalah Cermin dari<br>Kedalaman Instruksi Anda.</h2>
+  <p>Semakin spesifik dan terstruktur instruksimu, semakin presisi dan berguna output yang dihasilkan. Inilah inti dari semua materi ini.</p>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+    <div class="formula-display">
+      <span style="color:var(--accent-blue); font-weight:900">PTCF</span>
+      <span style="color:var(--muted)">untuk</span>
+      <span style="color:var(--text)">Kedalaman</span>
+      <span style="color:var(--border)">|</span>
+      <span style="color:var(--accent-coral); font-weight:900">TKR</span>
+      <span style="color:var(--muted)">untuk</span>
+      <span style="color:var(--text)">Presisi</span>
+    </div>
+
+    <div class="formula-display" style="margin-top: 8px;">
+      <span style="color:var(--accent-mint)">Mode AI</span>
+      <span style="color:var(--muted)">+</span>
+      <span style="color:var(--accent-gold)">Gemini 3</span>
+      <span style="color:var(--muted)">+</span>
+      <span style="color:var(--accent-purple)">Prompt Mastery</span>
+      <span style="color:var(--muted)">=</span>
+      <span style="color:var(--text); font-style: italic;">Superpower</span>
+    </div>
+  </div>
+
+  <p style="margin-top: 48px; font-size: 13px; color: var(--muted); opacity: 0.6;">Dibuat dari 3 materi: Mode AI GSA ID 2025 · Gemini Academy untuk Mahasiswa 2026 · Mastering AI Architectures (NotebookLM)</p>
+</section>
+
+<script>
+  // Intersection Observer for animate-on-scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
